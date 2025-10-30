@@ -260,8 +260,20 @@
                     <span class="info-value" id="displayCategory">-</span>
                 </div>
                 <div class="info-row">
+                    <span class="info-label">Station Code:</span>
+                    <span class="info-value" id="displayStationCode">-</span>
+                </div>
+                <div class="info-row">
                     <span class="info-label">Station:</span>
                     <span class="info-value" id="displayStation">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Licensee Name:</span>
+                    <span class="info-value" id="displayLicenseeName">-</span>
+                </div> 
+                 <div class="info-row">
+                    <span class="info-label">Location:</span>
+                    <span class="info-value" id="displayUnitLocation">-</span>
                 </div>
             </div>
 
@@ -340,6 +352,10 @@
         document.getElementById('displayAssetCode').textContent = assetCode;
         document.getElementById('displayCategory').textContent = category;
         document.getElementById('displayStation').textContent = station;
+        document.getElementById('displayStationCode').textContent = stationcode;
+        document.getElementById('displayLicenseeName').textContent = licensee_name;
+        document.getElementById('displayUnitLocation').textContent = unitlocation;
+        
 
         // Character counter
         document.getElementById('description').addEventListener('input', function() {
@@ -347,17 +363,17 @@
         });
 
         // Photo preview
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImage').src = e.target.result;
-                    document.getElementById('photoPreview').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+        // document.getElementById('photoInput').addEventListener('change', function(e) {
+        //     const file = e.target.files[0];
+        //     if (file) {
+        //         const reader = new FileReader();
+        //         reader.onload = function(e) {
+        //             document.getElementById('previewImage').src = e.target.result;
+        //             document.getElementById('photoPreview').style.display = 'block';
+        //         };
+        //         reader.readAsDataURL(file);
+        //     }
+        // });
 
         // Form submission
         document.getElementById('complaintForm').addEventListener('submit', function(e) {
@@ -365,10 +381,11 @@
 
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value || 'Not provided';
             const issueType = document.getElementById('issueType').value;
-            const priority = document.getElementById('priority').value;
             const description = document.getElementById('description').value;
+            const Station = document.getElementById('station').value;
+            const stationcode = document.getElementById('stationCode').value;
+            const licensee_name= document.getElementById('licensee_name').value;
 
             // Create WhatsApp message
             const message = `*🚂 RAILWAY ASSET COMPLAINT*
