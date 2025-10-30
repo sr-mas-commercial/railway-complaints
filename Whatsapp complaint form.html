@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚂 Railway Asset Complaint Form - WhatsApp</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .whatsapp-icon {
+            font-size: 1.2em;
+        }
+
+        .header p {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .asset-info {
+            background: #f0f0f0;
+            border-left: 4px solid #25D366;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+
+        .asset-info h3 {
+            color: #128C7E;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .required {
+            color: #f44336;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #25D366;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .photo-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .photo-upload:hover {
+            border-color: #25D366;
+            background: #f9f9f9;
+        }
+
+        .photo-upload input[type="file"] {
+            display: none;
+        }
+
+        .photo-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .photo-preview img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .disclaimer strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="whatsapp-icon">💬</span> Asset Complaint Form</h1>
+            <p>Report issues via WhatsApp</p>
+        </div>
+
+        <div class="content">
+            <div class="success-message" id="successMessage">
+                ✓ Redirecting to WhatsApp...
+            </div>
+
+            <div class="asset-info" id="assetInfo">
+                <h3>📍 Asset Information</h3>
+                <div class="info-row">
+                    <span class="info-label">Asset Code:</span>
+                    <span class="info-value" id="displayAssetCode">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Category:</span>
+                    <span class="info-value" id="displayCategory">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Station:</span>
+                    <span class="info-value" id="displayStation">-</span>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <strong>⚠️ Important:</strong>
+                Your complaint will be sent via WhatsApp to the railway maintenance team. 
+                Please provide accurate information. You may be contacted for follow-up.
+            </div>
+
+            <form id="complaintForm">
+                <div class="form-group">
+                    <label for="name">Your Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Contact Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXXXXXXX" pattern="[0-9+\s()-]+">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="issueType">Issue Type <span class="required">*</span></label>
+                    <select id="issueType" name="issueType" required>
+                        <option value="">Select issue type</option>
+                        <option value="Cleanliness">Cleanliness Issue</option>
+                        <option value="Maintenance">Maintenance Required</option>
+                        <option value="Safety">Safety Concern</option>
+                        <option value="Damage">Damage/Broken Equipment</option>
+                        <option value="Not Working">Not Working/Out of Service</option>
+                        <option value="Hygiene">Hygiene Issue</option>
+                        <option value="Accessibility">Accessibility Problem</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Priority Level <span class="required">*</span></label>
+                    <select id="priority" name="priority" required>
+                        <option value="">Select priority</option>
+                        <option value="Low">Low - Minor issue</option>
+                        <option value="Medium">Medium - Needs attention</option>
+                        <option value="High">High - Urgent</option>
+                        <option value="Critical">Critical - Immediate action required</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Complaint Description <span class="required">*</span></label>
+                    <textarea id="description" name="description" required placeholder="Please describe the issue in detail..." maxlength="500"></textarea>
+                    <div class="char-count"><span id="charCount">0</span>/500 characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Photo (Optional)</label>
+                    <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+                        <p>📸 Click to upload photo</p>
+                        <p style="font-size: 12px; color: #999; margin-top: 5px;">Helps us understand the issue better</p>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" capture="environment">
+                    <div class="photo-preview" id="photoPreview">
+                        <img id="previewImage" src="" alt="Preview">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span class="whatsapp-icon">💬</span>
+                    Send Complaint via WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const assetCode = urlParams.get('assetcode') || 'Unknown';
+        const category = urlParams.get('category') || 'Unknown';
+        const station = urlParams.get('station') || 'Unknown';
+
+        // WhatsApp number (REPLACE WITH YOUR ACTUAL WHATSAPP NUMBER)
+        const WHATSAPP_NUMBER = '919895130935'; // Format: Country code + number (no + or spaces)
+
+        // Display asset information
+        document.getElementById('displayAssetCode').textContent = assetCode;
+        document.getElementById('displayCategory').textContent = category;
+        document.getElementById('displayStation').textContent = station;
+
+        // Character counter
+        document.getElementById('description').addEventListener('input', function() {
+            document.getElementById('charCount').textContent = this.value.length;
+        });
+
+        // Photo preview
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('photoPreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission
+        document.getElementById('complaintForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value || 'Not provided';
+            const issueType = document.getElementById('issueType').value;
+            const priority = document.getElementById('priority').value;
+            const description = document.getElementById('description').value;
+
+            // Create WhatsApp message
+            const message = `*🚂 RAILWAY ASSET COMPLAINT*
+
+*Asset Details:*
+📍 Asset Code: ${assetCode}
+🏷️ Category: ${category}
+🚉 Station: ${station}
+
+*Complainant Information:*
+👤 Name: ${name}
+📱 Phone: ${phone}
+📧 Email: ${email}
+
+*Issue Details:*
+⚠️ Issue Type: ${issueType}
+🔴 Priority: ${priority}
+
+*Description:*
+${description}
+
+---
+_Submitted via QR Code Complaint System_`;
+
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Create WhatsApp URL
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Redirect to WhatsApp after 1 second
+            setTimeout(() => {
+                window.location.href = whatsappUrl;
+            }, 1000);
+        });
+
+        // Auto-fill form with test data (remove in production)
+        // Uncomment these lines for testing:
+        // document.getElementById('name').value = 'Test User';
+        // document.getElementById('phone').value = '+91 9876543210';
+    </script>
+</body>
+</html>
