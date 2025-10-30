@@ -260,8 +260,16 @@
                     <span class="info-value" id="displayCategory">-</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Station:</span>
+                    <span class="info-label">Station Code:</span>
                     <span class="info-value" id="displayStation">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Station Name:</span>
+                    <span class="info-value" id="displayStationName">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Licensee:</span>
+                    <span class="info-value" id="displayLicensee">-</span>
                 </div>
             </div>
 
@@ -279,12 +287,7 @@
 
                 <div class="form-group">
                     <label for="phone">Contact Number <span class="required">*</span></label>
-                    <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXXXXXXX" pattern="[0-9+\s()-]+">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="your.email@example.com">
+                    <input type="tel" id="phone" name="phone" maxlength="10" required placeholder="+91 XXXXXXXXXX" pattern="[0-9+\s()-]+">
                 </div>
 
                 <div class="form-group">
@@ -293,9 +296,9 @@
                         <option value="">Select issue type</option>
                         <option value="Cleanliness">Cleanliness Issue</option>
                         <option value="Maintenance">Maintenance Required</option>
-                        <option value="Safety">Safety Concern</option>
-                        <option value="Damage">Damage/Broken Equipment</option>
-                        <option value="Not Working">Not Working/Out of Service</option>
+                        <option value="Overcharging">Overcharging</option>
+                        <option value="Staff Behaviour">Staff Behaviour</option>
+                        <option value="Quantity/Quality of service">Quantity/Quality of service</option>
                         <option value="Hygiene">Hygiene Issue</option>
                         <option value="Accessibility">Accessibility Problem</option>
                         <option value="Other">Other</option>
@@ -303,32 +306,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="priority">Priority Level <span class="required">*</span></label>
-                    <select id="priority" name="priority" required>
-                        <option value="">Select priority</option>
-                        <option value="Low">Low - Minor issue</option>
-                        <option value="Medium">Medium - Needs attention</option>
-                        <option value="High">High - Urgent</option>
-                        <option value="Critical">Critical - Immediate action required</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <label for="description">Complaint Description <span class="required">*</span></label>
                     <textarea id="description" name="description" required placeholder="Please describe the issue in detail..." maxlength="500"></textarea>
                     <div class="char-count"><span id="charCount">0</span>/500 characters</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Upload Photo (Optional)</label>
-                    <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
-                        <p>📸 Click to upload photo</p>
-                        <p style="font-size: 12px; color: #999; margin-top: 5px;">Helps us understand the issue better</p>
-                    </div>
-                    <input type="file" id="photoInput" accept="image/*" capture="environment">
-                    <div class="photo-preview" id="photoPreview">
-                        <img id="previewImage" src="" alt="Preview">
-                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">
@@ -345,6 +325,9 @@
         const assetCode = urlParams.get('assetcode') || 'Unknown';
         const category = urlParams.get('category') || 'Unknown';
         const station = urlParams.get('station') || 'Unknown';
+        const stationName = urlParams.get('stationName') || 'Unknown';
+        const licensee = urlParams.get('licensee') || 'Unknown';
+
 
         // WhatsApp number (REPLACE WITH YOUR ACTUAL WHATSAPP NUMBER)
         const WHATSAPP_NUMBER = '919895130935'; // Format: Country code + number (no + or spaces)
@@ -353,24 +336,15 @@
         document.getElementById('displayAssetCode').textContent = assetCode;
         document.getElementById('displayCategory').textContent = category;
         document.getElementById('displayStation').textContent = station;
+        document.getElementById('displayStationName').textContent = stationName;
+        document.getElementById('displayLicensee').textContent = licensee;
+
 
         // Character counter
         document.getElementById('description').addEventListener('input', function() {
             document.getElementById('charCount').textContent = this.value.length;
         });
 
-        // Photo preview
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImage').src = e.target.result;
-                    document.getElementById('photoPreview').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
 
         // Form submission
         document.getElementById('complaintForm').addEventListener('submit', function(e) {
@@ -378,10 +352,11 @@
 
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value || 'Not provided';
+            
             const issueType = document.getElementById('issueType').value;
-            const priority = document.getElementById('priority').value;
+            
             const description = document.getElementById('description').value;
+            const licensee = document.getElementById('licensee').value
 
             // Create WhatsApp message
             const message = `*🚂 RAILWAY ASSET COMPLAINT*
@@ -390,15 +365,17 @@
 📍 Asset Code: ${assetCode}
 🏷️ Category: ${category}
 🚉 Station: ${station}
+Station Name: ${stationName}
+Licensee Name: ${licensee}
 
 *Complainant Information:*
 👤 Name: ${name}
 📱 Phone: ${phone}
-📧 Email: ${email}
+
 
 *Issue Details:*
 ⚠️ Issue Type: ${issueType}
-🔴 Priority: ${priority}
+
 
 *Description:*
 ${description}
