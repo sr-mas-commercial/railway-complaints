@@ -87,15 +87,11 @@
         .info-label {
             font-weight: 600;
             color: #555;
-            font-size: 14px;
         }
 
         .info-value {
             color: #333;
             text-align: right;
-            max-width: 60%;
-            word-break: break-word;
-            font-size: 14px;
         }
 
         .form-group {
@@ -135,6 +131,35 @@
         .form-group textarea {
             min-height: 120px;
             resize: vertical;
+        }
+
+        .photo-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .photo-upload:hover {
+            border-color: #25D366;
+            background: #f9f9f9;
+        }
+
+        .photo-upload input[type="file"] {
+            display: none;
+        }
+
+        .photo-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .photo-preview img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
         }
 
         .btn-submit {
@@ -195,18 +220,6 @@
             border-radius: 8px;
             text-align: center;
             margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        .error-message {
-            display: none;
-            background: #f44336;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
         }
 
         @media (max-width: 600px) {
@@ -233,23 +246,13 @@
 
         <div class="content">
             <div class="success-message" id="successMessage">
-                ✓ Opening WhatsApp...
+                ✓ Redirecting to WhatsApp...
             </div>
-
-            <div class="error-message" id="errorMessage"></div>
 
             <div class="asset-info" id="assetInfo">
                 <h3>📍 Asset Information</h3>
                 <div class="info-row">
-                    <span class="info-label">Station Code:</span>
-                    <span class="info-value" id="displayStationCode">-</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Station Name:</span>
-                    <span class="info-value" id="displayStation">-</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Asset Code (Stall ID):</span>
+                    <span class="info-label">Asset Code:</span>
                     <span class="info-value" id="displayAssetCode">-</span>
                 </div>
                 <div class="info-row">
@@ -257,12 +260,8 @@
                     <span class="info-value" id="displayCategory">-</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span class="info-value" id="displayLocation">-</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Licensee Name:</span>
-                    <span class="info-value" id="displayLicensee">-</span>
+                    <span class="info-label">Station:</span>
+                    <span class="info-value" id="displayStation">-</span>
                 </div>
             </div>
 
@@ -284,13 +283,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com">
+                </div>
+
+                <div class="form-group">
                     <label for="issueType">Issue Type <span class="required">*</span></label>
                     <select id="issueType" name="issueType" required>
                         <option value="">Select issue type</option>
-                        <option value="Overcharging">Overcharging</option>
-                        <option value="Staff Behaviour">Staff Behaviour</option>
-                        <option value="Service Quality">Service Quality</option>
-                        <option value="Food Quality and Quantity">Food Quality and Quantity</option>
                         <option value="Cleanliness">Cleanliness Issue</option>
                         <option value="Maintenance">Maintenance Required</option>
                         <option value="Safety">Safety Concern</option>
@@ -303,9 +303,32 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="priority">Priority Level <span class="required">*</span></label>
+                    <select id="priority" name="priority" required>
+                        <option value="">Select priority</option>
+                        <option value="Low">Low - Minor issue</option>
+                        <option value="Medium">Medium - Needs attention</option>
+                        <option value="High">High - Urgent</option>
+                        <option value="Critical">Critical - Immediate action required</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="description">Complaint Description <span class="required">*</span></label>
                     <textarea id="description" name="description" required placeholder="Please describe the issue in detail..." maxlength="500"></textarea>
                     <div class="char-count"><span id="charCount">0</span>/500 characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Photo (Optional)</label>
+                    <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+                        <p>📸 Click to upload photo</p>
+                        <p style="font-size: 12px; color: #999; margin-top: 5px;">Helps us understand the issue better</p>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" capture="environment">
+                    <div class="photo-preview" id="photoPreview">
+                        <img id="previewImage" src="" alt="Preview">
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">
@@ -317,115 +340,91 @@
     </div>
 
     <script>
-        // ⚠️ HARDCODED WHATSAPP NUMBER - Change this to your actual WhatsApp number
-        // Format: Country code + number (no spaces, no + sign)
-        // Example: '919876543210' for India (+91 9876543210)
-        const WHATSAPP_NUMBER = '919876543210';  // ⬅️ CHANGE THIS NUMBER
-
         // Parse URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const assetCode = urlParams.get('assetcode') || urlParams.get('asset_code') || 'Not Available';
-        const category = urlParams.get('category') || 'Not Available';
-        const stationCode = urlParams.get('stationcode') || urlParams.get('station_code') || 'Not Available';
-        const stationName = urlParams.get('stationname') || urlParams.get('station_name') || 'Not Available';
-        const location = urlParams.get('location') || 'Not Available';
-        const licenseeName = urlParams.get('licensee') || urlParams.get('licensee_name') || 'Not Available';
+        const assetCode = urlParams.get('assetcode') || 'Unknown';
+        const category = urlParams.get('category') || 'Unknown';
+        const station = urlParams.get('station') || 'Unknown';
+
+        // WhatsApp number (REPLACE WITH YOUR ACTUAL WHATSAPP NUMBER)
+        const WHATSAPP_NUMBER = '919895130935'; // Format: Country code + number (no + or spaces)
 
         // Display asset information
-        document.getElementById('displayStationCode').textContent = stationCode;
-        document.getElementById('displayStation').textContent = stationName;
         document.getElementById('displayAssetCode').textContent = assetCode;
         document.getElementById('displayCategory').textContent = category;
-        document.getElementById('displayLocation').textContent = location;
-        document.getElementById('displayLicensee').textContent = licenseeName;
+        document.getElementById('displayStation').textContent = station;
 
         // Character counter
         document.getElementById('description').addEventListener('input', function() {
             document.getElementById('charCount').textContent = this.value.length;
         });
 
+        // Photo preview
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('photoPreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         // Form submission
         document.getElementById('complaintForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value || 'Not provided';
             const issueType = document.getElementById('issueType').value;
-            const description = document.getElementById('description').value.trim();
+            const priority = document.getElementById('priority').value;
+            const description = document.getElementById('description').value;
 
-            // Validate required fields
-            if (!name || !phone || !issueType || !description) {
-                showError('Please fill in all required fields');
-                return;
-            }
-
-            // Create WhatsApp message with all details
+            // Create WhatsApp message
             const message = `*🚂 RAILWAY ASSET COMPLAINT*
 
 *Asset Details:*
-🚉 Station Code: ${stationCode}
-🚉 Station Name: ${stationName}
-📍 Asset Code (Stall ID): ${assetCode}
+📍 Asset Code: ${assetCode}
 🏷️ Category: ${category}
-📍 Location: ${location}
-👔 Licensee Name: ${licenseeName}
+🚉 Station: ${station}
 
 *Complainant Information:*
 👤 Name: ${name}
 📱 Phone: ${phone}
+📧 Email: ${email}
 
 *Issue Details:*
 ⚠️ Issue Type: ${issueType}
+🔴 Priority: ${priority}
 
 *Description:*
 ${description}
 
 ---
-_Submitted via QR Code Complaint System_
-_Date: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}_`;
+_Submitted via QR Code Complaint System_`;
 
             // Encode message for URL
             const encodedMessage = encodeURIComponent(message);
-
+            
             // Create WhatsApp URL
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
-
-            console.log('Sending to WhatsApp:', WHATSAPP_NUMBER);
-            console.log('WhatsApp URL:', whatsappUrl);
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
 
             // Show success message
             document.getElementById('successMessage').style.display = 'block';
-            document.getElementById('submitBtn').disabled = true;
 
             // Redirect to WhatsApp after 1 second
             setTimeout(() => {
-                // Try to open in new window first
-                const whatsappWindow = window.open(whatsappUrl, '_blank');
-
-                // If popup was blocked, redirect in same window
-                if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed === 'undefined') {
-                    window.location.href = whatsappUrl;
-                } else {
-                    // Reset form after successful opening
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                        document.getElementById('submitBtn').disabled = false;
-                        document.getElementById('complaintForm').reset();
-                        document.getElementById('charCount').textContent = '0';
-                    }, 2000);
-                }
+                window.location.href = whatsappUrl;
             }, 1000);
         });
 
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = '❌ ' + message;
-            errorDiv.style.display = 'block';
-
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 5000);
-        }
+        // Auto-fill form with test data (remove in production)
+        // Uncomment these lines for testing:
+        // document.getElementById('name').value = 'Test User';
+        // document.getElementById('phone').value = '+91 9876543210';
     </script>
 </body>
 </html>
