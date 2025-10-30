@@ -340,10 +340,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const assetCode = urlParams.get('assetcode') || 'Unknown';
         const category = urlParams.get('category') || 'Unknown';
-        const stationcode = urlParams.get('station_code') || 'Unknown';
+        //const stationcode = urlParams.get('station_code') || 'Unknown';
         const station = urlParams.get('station') || 'Unknown';
-        const licensee_name = urlParams.get('licensee_name') || 'Unknown';
-        const unitlocation = urlParams.get('unit_location__platform') || 'Unknown';
+        // const licensee_name = urlParams.get('licensee_name') || 'Unknown';
+        // const unitlocation = urlParams.get('unit_location__platform') || 'Unknown';
 
         // WhatsApp number (REPLACE WITH YOUR ACTUAL WHATSAPP NUMBER)
         const WHATSAPP_NUMBER = '919895130935'; // Format: Country code + number (no + or spaces)
@@ -352,9 +352,9 @@
         document.getElementById('displayAssetCode').textContent = assetCode;
         document.getElementById('displayCategory').textContent = category;
         document.getElementById('displayStation').textContent = station;
-        document.getElementById('displayStationCode').textContent = stationcode;
-        document.getElementById('displayLicenseeName').textContent = licensee_name;
-        document.getElementById('displayUnitLocation').textContent = unitlocation;
+        // document.getElementById('displayStationCode').textContent = stationcode;
+        // document.getElementById('displayLicenseeName').textContent = licensee_name;
+        // document.getElementById('displayUnitLocation').textContent = unitlocation;
         
 
         // Character counter
@@ -384,8 +384,8 @@
             const issueType = document.getElementById('issueType').value;
             const description = document.getElementById('description').value;
             const Station = document.getElementById('station').value;
-            const stationcode = document.getElementById('stationCode').value;
-            const licensee_name= document.getElementById('licensee_name').value;
+            // const stationcode = document.getElementById('stationCode').value;
+            // const licensee_name= document.getElementById('licensee_name').value;
 
             // Create WhatsApp message
             const message = `*🚂 RAILWAY ASSET COMPLAINT*
