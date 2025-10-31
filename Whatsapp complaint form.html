@@ -170,6 +170,28 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 12px;
+            border-top: 2px solid #667eea;
+        }
+
+        footer p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        @media print {
+            footer {
+                display: none;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -3449,5 +3471,8 @@ _Submitted on: ${new Date().toLocaleString()}_`;
             }
         });
     </script>
+    <footer>
+        <p>© 2025 IT Wing, Commercial Branch, Chennai Division, Southern Railway.</p>
+    </footer>
 </body>
 </html>
