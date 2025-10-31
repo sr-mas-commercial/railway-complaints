@@ -3369,6 +3369,21 @@
             document.getElementById('loading').style.display = 'block';
             document.querySelector('.submit-btn').style.display = 'none';
 
+            // Prepare data for Google Sheets (silent background save)
+            const sheetData = {
+                name: name,
+                mobile: mobile,
+                assetCode: asset.assetCode,
+                stationCode: asset.stationCode,
+                stationName: asset.stationName,
+                location: asset.location,
+                type: asset.type,
+                licenseeName: asset.licenseeName,
+                complaintType: complaintType,
+                complaint: complaint,
+                submittedOn: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+            };
+
             // Save to Google Sheets silently (user won't see this)
             saveToGoogleSheets(sheetData);
 
