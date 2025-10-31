@@ -233,6 +233,11 @@
             </div>
 
             <div class="form-group">
+                <label for="pnruts">PNR/UTS Number <span class="required">*</span> </label>
+                <input type="text" id="pnruts" name="pnruts" placeholder="Enter your PNR/UTS Number">
+            </div>
+
+            <div class="form-group">
                 <label for="complaintType">Complaint Type <span class="required">*</span></label>
                 <select id="complaintType" name="complaintType" required>
                     <option value="">Select complaint type</option>
@@ -3360,6 +3365,7 @@
             const name = document.getElementById('name').value;
             const mobile = document.getElementById('mobile').value;
             const email = document.getElementById('email').value;
+            const pnruts = document.getElementById('pnruts').value;
             const complaintType = document.getElementById('complaintType').value;
             const complaint = document.getElementById('complaint').value;
 
@@ -3407,6 +3413,7 @@ Licensee: ${asset.licenseeName}
 Name: ${name}
 Mobile: ${mobile}
 ${email ? 'Email: ' + email : ''}
+PNR/UTS Number: ${pnruts}
 
 *Complaint Type:* ${complaintType}
 
