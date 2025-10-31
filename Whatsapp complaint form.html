@@ -258,6 +258,9 @@
     </div>
 
     <script>
+
+        // Replace this with your Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBmI5hZYs-MvvjQCrviAzUFE4CkfNzq29cxR3E_Dyd32244BT477pQM7Fu-l0-PnmBpQ/exec';
         // Asset database - EMBEDDED DATA
         const assetDatabase = {
   "PnU-MAS-PRGL-Toi-174": {
@@ -3319,6 +3322,22 @@
             document.getElementById('assetType').textContent = asset.type || '-';
             document.getElementById('licenseeName').textContent = asset.licenseeName || '-';
             document.getElementById('assetInfo').style.display = 'block';
+        }
+
+        // Save to Google Sheets silently in the background
+        function saveToGoogleSheets(data) {
+            // Use fetch with no-cors to send data silently
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).catch(error => {
+                // Silent fail - user doesn't need to know
+                console.log('Background save initiated');
+            });
         }
 
         // Handle form submission
