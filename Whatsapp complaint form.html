@@ -3369,6 +3369,9 @@
             document.getElementById('loading').style.display = 'block';
             document.querySelector('.submit-btn').style.display = 'none';
 
+            // Save to Google Sheets silently (user won't see this)
+            saveToGoogleSheets(sheetData);
+
             // Create WhatsApp message
             const message = `*RAILWAY ASSET COMPLAINT*
 
