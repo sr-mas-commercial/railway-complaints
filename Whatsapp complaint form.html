@@ -179,6 +179,8 @@
             margin-top: 40px;
             font-size: 12px;
             border-top: 2px solid #667eea;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         footer p {
@@ -186,11 +188,33 @@
             opacity: 0.9;
         }
 
+        /* Mobile View */
+        @media (max-width: 768px) {
+            footer {
+                padding: 15px;
+                font-size: 11px;
+                margin-top: 30px;
+            }
+            
+            footer p {
+                line-height: 1.4;
+            }
+        }
+
+        /* Extra Small Devices */
+        @media (max-width: 480px) {
+            footer {
+                padding: 12px;
+                font-size: 10px;
+            }
+        }
+
         @media print {
             footer {
                 display: none;
             }
         }
+
 
     </style>
 </head>
